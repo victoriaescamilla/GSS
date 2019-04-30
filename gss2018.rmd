@@ -1,7 +1,7 @@
 ---
 title: "General Social Survey"
-author: "Your Name"
-date: "Year 2019"
+author: "Victoria Escamilla"
+date: "4/29/2019"
 output: 
   html_document:
     number_sections: true
@@ -49,7 +49,11 @@ This data is from the 2018 General Social Survey. The first blocks of R-code has
 
 <!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method.!-->
 
+Methods that will be used in this GSS are the Pearson's Chi-square test, Extract Test for count data, and barcharts.
+
 ##Results
+
+There was a relationship between those who voted in 2012 and 2016 in which those who voted in 2012 most likely voted in 2016 also.  
 
 <!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
 
@@ -59,13 +63,37 @@ This data is from the 2018 General Social Survey. The first blocks of R-code has
 
 <!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
+```{r}
+voted1=c(92.04 , 35.96)
+voted2=c(32.96 , 14.04)
+tabl = rbind(voted1,voted2)
+barchartGC(tabl)
+```
+
 #### Numerical Descriptive Results
 
 <!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
+```{r}
+mytable2 <- xtabs(~VOTE16+VOTE12, data=mydata4)
+rowPerc(mytable2) 
+colPerc(mytable2)
+``` 
 ### Inferential Results
 
 <!--State hypothesis clearly.  Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc.  Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
+
+$H_0$ : There is a relationship between those who voted in 2012 and 2016.
+
+$H_A$ : There is no relationship between those who voted in 2012 and 2016.
+
+```{r}
+chisqtestGC(~VOTE16+VOTE12, data=mydata4)
+```
+
+```{r}
+fisher.test(mytable2)
+```
 
 # Introduction Question 2
 
@@ -77,23 +105,49 @@ Now answer Is belief in the bigbang theory (BIGBANG) independent of belief in th
 
 <!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method.!-->
 
+The methods for this question are Chi-squared for continuity correction, Fisher's Exact count for data and bar charts.
+
 ##Results
 
 <!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
 
 ### Descriptive Results
 
+There is a relationship between those who believe in the Big Bang Theory will also believe in Post Life. The two are not independent because the p-value is greater than .05.
+
 #### Graphical Descriptive Results
 
 <!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question!-->
+
+```{r}
+barchartGC(~BIGBANG+POSTLIFE, data=mydata4, type = "percent") 
+barchartGC(~BIGBANG+POSTLIFE, data=mydata4)
+``` 
 
 #### Numerical Descriptive Results
 
 <!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
+```{r}
+mytable1 <- xtabs(~BIGBANG+POSTLIFE, data=mydata4)
+rowPerc(mytable1) 
+colPerc(mytable1)
+```
+
 ### Inferential Results
 
 <!--State hypothesis clearly.  Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc.  Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
+
+$H_0$ : There is no relationship between believing in the Bigbang Theory and believing in Postlife.
+
+$H_A$ : There is a relationship between believing in the Bigbang Theory and believing in Postlife.
+```{r}
+chisqtestGC(~BIGBANG+POSTLIFE, data=mydata4)
+```
+
+```{r}
+fisher.test(mytable1)
+```
 
 # Introduction Question 3
 
@@ -105,26 +159,53 @@ This time compare the opinion on death penalty (CAPPUN) with opinion on courts (
 
 <!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method.!-->
 
+Methods that will be used for this question are Pearson's Chi-squared test to examine countinuity and barcharts. 
+
 ##Results
 
 <!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
 
 ### Descriptive Results
 
+The results show that there is no relationhip between gun owners and if they believe in captital punishment. For the p-value is less than .05. 
+
 #### Graphical Descriptive Results
 
 <!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question!-->
+
+ 
+```{r}
+barchartGC(~OWNGUN+CAPPUN, data=mydata4, type = "percent") 
+barchartGC(~OWNGUN+CAPPUN, data=mydata4)
+```
 
 #### Numerical Descriptive Results
 
 <!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
+```{r} 
+mytable <- xtabs(~OWNGUN+CAPPUN, data=mydata4)
+rowPerc(mytable) 
+colPerc(mytable)
+```
+
 ### Inferential Results
 
 <!--State hypothesis clearly.  Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc.  Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
+
+$H_0$ : There is no relationship between owning a gun and believing in the death penalty 
+
+$H_a$ : Gun ownership and opinion on capitol punishment have a relationship 
+
+```{r}
+chisqtestGC(~OWNGUN+CAPPUN, data=mydata4) 
+
+```
+
 
 
 # Discussion and Conclusion
 
 <!--Discussion and conclusion here.  If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhasps are related for some other reason.  Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
 
+In the first question I found a positive relationship between those who voted in 2012 and 2016. That those who voted in 2012 most likely voted again in 2016. For the second question I found a  relationship between those who believe in Post Life theory also believe in the Big Bang theory because the p-value of both Chi-square and Fisher test is greater than .05. In the last question I found no relationship between gun owners if they believe in capital punishment because both p-values for Chi-square was less than .05.
